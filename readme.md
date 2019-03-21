@@ -20,10 +20,19 @@ Prepare the environment:
 			- cmd "pip install pythonnet""
 
 Write your code:
-	- reference the Scia.OpenAPI.dll
-			clr.AddReference(r"C:\SCIA\GIT\SEN\A\Bin\release32\Scia.OpenAPI.dll")
-			clr.AddReference(r"C:\SCIA\GIT\SEN\A\Bin\release32\EnvESA80.dll")
-	- import SCIA.OpenAPI classes
-			from SCIA.OpenAPI import *
-			from SCIA.OpenAPI.StructureModelDefinition import *
-			from EnvESA80 import *
+
+
+
+
+
+- reference the Scia.OpenAPI.dll
+	```
+	clr.AddReference(r"C:\SCIA\GIT\SEN\A\Bin\release32\Scia.OpenAPI.dll")
+	clr.AddReference(r"C:\SCIA\GIT\SEN\A\Bin\release32\EnvESA80.dll")
+	```
+- import SCIA.OpenAPI classes
+	```
+	from SCIA.OpenAPI import *
+	from SCIA.OpenAPI.StructureModelDefinition import *
+	from EnvESA80 import *
+	```
