@@ -46,11 +46,6 @@ Prepare the environment:
 					- pip install git+https://github.com/pythonnet/pythonnet.git
 
 Write your code:
-
-
-
-
-
 - reference the Scia.OpenAPI.dll
 	```
 	clr.AddReference(r"C:\SCIA\GIT\SEN\A\Bin\release32\Scia.OpenAPI.dll")
