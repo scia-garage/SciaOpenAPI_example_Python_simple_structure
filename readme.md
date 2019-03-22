@@ -1,23 +1,49 @@
 Prepare the environment:
-- install python 3.7
-	- setup https://www.python.org/downloads/release/python-370/
-	- if not done automatically, add the python.exe location into Path system variable (e.g. C:\Users\...\AppData\Local\Programs\Python\Python37-32\python.exe)
-	- place the .\res\python.exe.config and pythonw.exe.config to the directory where the python.exe and pythonw.exe are (e.g. run cmd "where python.exe")
-- install python.net 
-	- direct install:
-		- download https://ci.appveyor.com/project/pythonnet/pythonnet/branch/master/job/aqi7eyx1j0gcxcs0/artifacts
-		- setup.py build
-		- setup.py install
-	- or via PIP:
-		- install pip (https://pip.pypa.io/en/stable/installing/)
-			- curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-			- python get-pip.py
-		- test pip in python directory:
-			- cmd "cd C:\Users\...\AppData\Local\Programs\Python\Python37-32\Scripts (or where the Python is located)"
-			- cmd "pip freeze"
-		- install python.net via PIP:
-			- cmd "cd C:\Users\...\AppData\Local\Programs\Python\Python37-32\Scripts (or where the Python is located)"
-			- cmd "pip install pythonnet""
+	- install Scia Engineer
+		- .NET FW is included in setup
+		- start Scia ENgineer to test it
+	- install python 3.7 
+		- install using setup https://www.python.org/downloads/release/python-370/ (check the "add Python to path" checkbox)
+		- copy the .\res\python.exe.config and pythonw.exe.config to the directory where the python.exe and pythonw.exe are (e.g. run cmd "where python.exe")
+		- setup should also install the PIP package manager for Python
+		- test python by running cmd python
+		- test pip by running cmd pip
+		- upgrade PIP by running "python -m pip install --upgrade pip"
+		- install the WHEEL package by running "pip install wheel"
+
+	- install python.net https://github.com/pythonnet/pythonnet/wiki/Installation
+		- preffered way
+			- via PIP from local .whl file 
+				- get .whl file
+					- from https://ci.appveyor.com
+						- go to https://ci.appveyor.com/project/pythonnet/pythonnet 
+						- select some stable revision
+						- select correct PYTHON_VERSION (e.g. 3.7) and Platform (e.g. x64) - click it
+						- go to Artifacts and download respective .whl file					
+					- from https://github.com/scia-garage/SciaOpenAPI_example_parabolic/tree/master/res
+						- go to website and download .whl file fitting your PYTHON version and PLATFORM
+				- cmd pip install .\<path.to.whl.file>.whl
+			
+		- alternatives
+			- prerequisities
+				- you need mt.exe in PATH variable
+					- e.g. install MS Visual Studio https://developer.microsoft.com/en-us/windows/downloads
+					- e.g. install windows sdk https://developer.microsoft.com/cs-cz/windows/downloads/windows-10-sdk
+					- e.g. https://github.com/eladkarako/mt
+			- ways how to install
+				- via PIP from distant repo
+					- cmd pip install pythonnet
+				- via building released sources
+					- download sources https://ci.appveyor.com/project/pythonnet/pythonnet
+						- select some stable revision
+						- select correct version of python and platform
+					- extract binaries to new directory in PTYHON home directory (cmd where python)
+					- cd to that directory
+					- run python setup.py build
+					- run python setup.py install
+				- from pythoniron git repo
+					- install git https://git-scm.com/download/win
+					- pip install git+https://github.com/pythonnet/pythonnet.git
 
 Write your code:
 
