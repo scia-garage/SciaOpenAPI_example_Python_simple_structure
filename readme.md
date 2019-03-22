@@ -1,4 +1,4 @@
-Prepare the environment:
+# Prepare the environment:
 * install Scia Engineer
 	* .NET FW is included in setup
 	* start Scia ENgineer to test it
@@ -45,7 +45,7 @@ Prepare the environment:
 				* install git https://git-scm.com/download/win
 				* pip install git+https://github.com/pythonnet/pythonnet.git
 
-Write your code:
+# Write your code:
 * reference the Scia.OpenAPI.dll
 	```
 	clr.AddReference(r"C:\SCIA\GIT\SEN\A\Bin\release32\Scia.OpenAPI.dll")
