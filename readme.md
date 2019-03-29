@@ -50,13 +50,13 @@
 * reference the Scia.OpenAPI.dll
 	```
 	clr.AddReference(r"C:\SCIA\GIT\SEN\A\Bin\release32\Scia.OpenAPI.dll")
-	clr.AddReference(r"C:\SCIA\GIT\SEN\A\Bin\release32\EnvESA80.dll")
 	```
 * import SCIA.OpenAPI classes
 	```
-	from SCIA.OpenAPI import *
-	from SCIA.OpenAPI.StructureModelDefinition import *
-	from EnvESA80 import *
+	from SCIA.OpenAPI import *;
+	from SCIA.OpenAPI.StructureModelDefinition import *;
+	from SCIA.OpenAPI.Results import *;
+	from Results64Enums import *;
 	```
 # Troubleshooting:
 * if you get following exception, just register esa libraries
