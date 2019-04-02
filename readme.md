@@ -46,10 +46,12 @@
 				* install git from https://git-scm.com/download/win
 				* "pip install git+https://github.com/pythonnet/pythonnet.git"
 
+* copy ESAAtl80Extern.dll and FemBase.dll from Scia Engineer install directory to the Python install directory (e.g. run cmd "where python.exe")
+				
 # Write your code:
 * reference the Scia.OpenAPI.dll
 	```
-	clr.AddReference(r"C:\SCIA\GIT\SEN\A\Bin\release32\Scia.OpenAPI.dll")
+	clr.AddReference(r"C:\Program Files (x86)\SCIA\Engineer19.0\Scia.OpenAPI.dll")
 	```
 * import SCIA.OpenAPI classes
 	```

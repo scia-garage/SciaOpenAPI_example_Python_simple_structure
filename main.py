@@ -4,13 +4,11 @@ import clr;
 import sys;
 
 clr.AddReference(r"c:\SCIA\GIT\SEN\A\Bin\release32\Scia.OpenAPI.dll");
-#clr.AddReference(r"c:\SCIA\GIT\SEN\A\Bin\release32\EnvESA80.dll");
 
 from SCIA.OpenAPI import *;
 from SCIA.OpenAPI.StructureModelDefinition import *;
 from SCIA.OpenAPI.Results import *;
 from Results64Enums import *;
-#from EnvESA80 import *;
 from System import Guid
 
 env = Environment(r"c:\SCIA\GIT\SEN\A\Bin\release32", r".\Temp");
