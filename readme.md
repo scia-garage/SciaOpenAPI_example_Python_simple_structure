@@ -63,7 +63,7 @@
 * if you get following exception, just register esa libraries
 	* run cmd AS ADMINISTRATOR
 	* navigate to Scia Engineer directory
-	* run "EP_regsvr32 esa.exe"
+	* run "EP_regsvr32 esa.exe" (for 64bit "ep_regsvr64 esa.exe")
 ```
 Unhandled Exception: System.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation. ---> System.AccessViolationException: Attempted to read or write protected memory. This is often an indication that other memory is corrupt.
 ```
