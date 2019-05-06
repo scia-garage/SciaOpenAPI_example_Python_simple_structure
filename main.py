@@ -3,7 +3,7 @@ print("Hello world");
 import clr;
 import sys;
 
-clr.AddReference(r"c:\SCIA\GIT\SEN\A\Bin\release32\Scia.OpenAPI.dll");
+clr.AddReference(r"c:\SCIA\VER\Full_R_19.0_patch_1_bugfix_19_05_03_10_37_19.0100.1053.32\Scia.OpenAPI.dll");
 
 from SCIA.OpenAPI import *;
 from SCIA.OpenAPI.StructureModelDefinition import *;
@@ -11,7 +11,7 @@ from SCIA.OpenAPI.Results import *;
 from Results64Enums import *;
 from System import Guid
 
-env = Environment(r"c:\SCIA\GIT\SEN\A\Bin\release32", r".\Temp");
+env = Environment(r"c:\SCIA\VER\Full_R_19.0_patch_1_bugfix_19_05_03_10_37_19.0100.1053.32", r".\Temp", "1.0.0.0");
 print("Environment set");
 
 EnumGuiMode = Environment.GuiMode
@@ -25,63 +25,65 @@ print("project opened");
 
 
 
-steelmatid = Guid.NewGuid();
+steelmatid = ApiGuid.NewGuid();
 
 steelmat = Material(steelmatid, r"steel S235", 1, r"S 235");
 proj.Model.CreateMaterial(steelmat);
-comatid = Guid.NewGuid();
+comatid = ApiGuid.NewGuid();
 conmat = Material(comatid, "conc", 0, "C30/37");
 proj.Model.CreateMaterial(conmat);
-css_steel = Guid.NewGuid();
+css_steel = ApiGuid.NewGuid();
 cssHEA260 = CrossSectionManufactured(css_steel, "steel.HEA", steelmatid, "HEA260", 1, 0);
 proj.Model.CreateCrossSection(cssHEA260);
+
+zero = 0.0; # you can't use the "0" because it is INT and wrong constructor would be used by python.net...you must use the "0.0" DOUBLE value
 a = 6.0;
 b = 8.0;
 c = 3.0;
-n1 = Guid.NewGuid();
-n2 = Guid.NewGuid();
-n3 = Guid.NewGuid();
-n4 = Guid.NewGuid();
-n5 = Guid.NewGuid();
-n6 = Guid.NewGuid();
-n7 = Guid.NewGuid();
-n8 = Guid.NewGuid();
-proj.Model.CreateNode(StructNode(n1, "n1", 0, 0, 0));
-proj.Model.CreateNode(StructNode(n2, "n2", a, 0, 0));
-proj.Model.CreateNode(StructNode(n3, "n3", a, b, 0));
-proj.Model.CreateNode(StructNode(n4, "n4", 0, b, 0));
-proj.Model.CreateNode(StructNode(n5, "n5", 0, 0, c));
-proj.Model.CreateNode(StructNode(n6, "n6", a, 0, c));
+n1 = ApiGuid.NewGuid();
+n2 = ApiGuid.NewGuid();
+n3 = ApiGuid.NewGuid();
+n4 = ApiGuid.NewGuid();
+n5 = ApiGuid.NewGuid();
+n6 = ApiGuid.NewGuid();
+n7 = ApiGuid.NewGuid();
+n8 = ApiGuid.NewGuid();
+proj.Model.CreateNode(StructNode(n1, "n1", zero, zero, zero));
+proj.Model.CreateNode(StructNode(n2, "n2", a, zero, zero));
+proj.Model.CreateNode(StructNode(n3, "n3", a, b, zero));
+proj.Model.CreateNode(StructNode(n4, "n4", zero, b, zero));
+proj.Model.CreateNode(StructNode(n5, "n5", zero, zero, c));
+proj.Model.CreateNode(StructNode(n6, "n6", a, zero, c));
 proj.Model.CreateNode(StructNode(n7, "n7", a, b, c));
-proj.Model.CreateNode(StructNode(n8, "n8", 0, b, c));
+proj.Model.CreateNode(StructNode(n8, "n8", zero, b, c));
 
-b1 = Guid.NewGuid();
-b2 = Guid.NewGuid();
-b3 = Guid.NewGuid();
-b4 = Guid.NewGuid();
-proj.Model.CreateBeam(Beam(b1, "b1", css_steel, [ n1, n5 ]));
-proj.Model.CreateBeam(Beam(b2, "b2", css_steel,[ n2, n6 ]));
-proj.Model.CreateBeam(Beam(b3, "b3", css_steel,[ n3, n7 ]));
-proj.Model.CreateBeam(Beam(b4, "b4", css_steel,[ n4, n8 ]));
+b1 = ApiGuid.NewGuid();
+b2 = ApiGuid.NewGuid();
+b3 = ApiGuid.NewGuid();
+b4 = ApiGuid.NewGuid();
+proj.Model.CreateBeam(Beam(b1, "b1", css_steel, ApiGuidArr( [ n1, n5 ])));
+proj.Model.CreateBeam(Beam(b2, "b2", css_steel, ApiGuidArr( [ n2, n6 ])));
+proj.Model.CreateBeam(Beam(b3, "b3", css_steel, ApiGuidArr( [ n3, n7 ])));
+proj.Model.CreateBeam(Beam(b4, "b4", css_steel, ApiGuidArr( [ n4, n8 ])));
 
-proj.Model.CreatePointSupport(PointSupport(Guid.NewGuid(), "Su1", n1));
-proj.Model.CreatePointSupport(PointSupport(Guid.NewGuid(), "Su2", n2));
-proj.Model.CreatePointSupport(PointSupport(Guid.NewGuid(), "Su3", n3));
-proj.Model.CreatePointSupport(PointSupport(Guid.NewGuid(), "Su4", n4));
+proj.Model.CreatePointSupport(PointSupport(ApiGuid.NewGuid(), "Su1", n1));
+proj.Model.CreatePointSupport(PointSupport(ApiGuid.NewGuid(), "Su2", n2));
+proj.Model.CreatePointSupport(PointSupport(ApiGuid.NewGuid(), "Su3", n3));
+proj.Model.CreatePointSupport(PointSupport(ApiGuid.NewGuid(), "Su4", n4));
 
 
-s1 = Guid.NewGuid();
-nodes = [ n5, n6, n7, n8 ];
-proj.Model.CreateSlab(Slab(s1, "s1", 0, comatid, 0.15, nodes));
+s1 = ApiGuid.NewGuid();
 
-lg1 = Guid.NewGuid();
+proj.Model.CreateSlab(Slab(s1, "s1", 0, comatid, 0.15, ApiGuidArr( [ n5, n6, n7, n8 ])));
+
+lg1 = ApiGuid.NewGuid();
 proj.Model.CreateLoadGroup(LoadGroup(lg1, "lg1", 0));
 
-lc1 = Guid.NewGuid();
+lc1 = ApiGuid.NewGuid();
 proj.Model.CreateLoadCase(LoadCase(lc1, "lc1", 0, lg1, 1));
 
-sf1 = Guid.NewGuid();
-proj.Model.CreateSurfaceLoad(SurfaceLoad(sf1, "sf1", -12500, lc1, s1, 2));
+sf1 = ApiGuid.NewGuid();
+proj.Model.CreateSurfaceLoad(SurfaceLoad(sf1, "sf1", -12500.0, lc1, s1, 2));
 
 
 
@@ -135,22 +137,16 @@ keyDef2Ds1.CoordSystem = eCoordSystem.eCoordSys_Local;
 Def2Ds1 = rapi.LoadResult(keyDef2Ds1);
 print(Def2Ds1.GetTextOutput());
 
-#maxvalue = 0.0;
-#pivot;
-#for (i = 0; i < Def2Ds1.GetMeshElementCount(); i++)
-#{
-#pivot = Def2Ds1.GetValue(2, i);
-#if (System.Math.Abs(pivot) > System.Math.Abs(maxvalue))
-#{
-#maxvalue = pivot;
-#};
-#};
-#print("Maximum deformation on slab:");
-#print(maxvalue);
-print("Press any key to continue:")
-sys.stdin.readline()
+maxvalue = 0.0;
+pivot = 0.0;
+i = 0;
+while i < Def2Ds1.GetMeshElementCount():
+	pivot = Def2Ds1.GetValue(2, i);
+	if abs(pivot) > abs(maxvalue):
+		maxvalue = pivot;
+	i += 1
+
+print("Calculated max deformation of slab is ", maxvalue, " m.")
 
 
-
-env.CloseAllProjects(SaveMode.SaveChangesNo)
-
+proj.CloseProject(SaveMode.SaveChangesNo)
