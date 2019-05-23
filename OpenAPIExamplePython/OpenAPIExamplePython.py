@@ -4,13 +4,6 @@ import clr;
 import os;
 from pathlib import Path;
 
-
-#print("Current Working Directory " , os.getcwd());
-#os.chdir(r"c:\Program Files (x86)\SCIA\Engineer19.0")
-#print("Current Working Directory " , os.getcwd());
-
-sys.path.append(r"c:\Program Files (x86)\SCIA\Engineer19.0")
-
 clr.AddReference(r"c:\Program Files (x86)\SCIA\Engineer19.0\Scia.OpenAPI.dll");
 clr.AddReference(r"c:\Program Files (x86)\SCIA\Engineer19.0\EnvESA80.dll");
 
@@ -53,9 +46,9 @@ css_steel = Guid.NewGuid();
 steelCss = input('Steel Css: ')
 cssHEA260 = CrossSectionManufactured(css_steel, "steel.HEA", steelmatid,steelCss, 1, 0);
 proj.Model.CreateCrossSection(cssHEA260);
-a = input('Input a: ');
-b = input('Input b: ');
-c = input('Input c: ');
+a = float(input('Input a: '));
+b = float(input('Input b: '));
+c = float(input('Input c: '));
 n1 = Guid.NewGuid();
 n2 = Guid.NewGuid();
 n3 = Guid.NewGuid();
@@ -90,7 +83,7 @@ proj.Model.CreatePointSupport(PointSupport(Guid.NewGuid(), "Su4", n4));
 
 s1 = Guid.NewGuid();
 nodes = [ n5, n6, n7, n8 ];
-thickness = input('Slab thickness: ');
+thickness = float(input('Slab thickness: '));
 proj.Model.CreateSlab(Slab(s1, "s1", 0, comatid, thickness, nodes));
 
 lg1 = Guid.NewGuid();
@@ -100,7 +93,7 @@ lc1 = Guid.NewGuid();
 proj.Model.CreateLoadCase(LoadCase(lc1, "lc1", 0, lg1, 1));
 
 sf1 = Guid.NewGuid();
-loadvalue = input('Value of surface load: ');
+loadvalue = float(input('Value of surface load: '));
 proj.Model.CreateSurfaceLoad(SurfaceLoad(sf1, "sf1",loadvalue, lc1, s1, 2));
 
 
