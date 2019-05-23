@@ -2,10 +2,12 @@ import uuid;
 import sys;
 import clr;
 import os;
+from pathlib import Path;
 
-print("Current Working Directory " , os.getcwd())
-os.chdir(r"c:\Program Files (x86)\SCIA\Engineer19.0")
-print("Current Working Directory " , os.getcwd())
+
+#print("Current Working Directory " , os.getcwd());
+#os.chdir(r"c:\Program Files (x86)\SCIA\Engineer19.0")
+#print("Current Working Directory " , os.getcwd());
 
 sys.path.append(r"c:\Program Files (x86)\SCIA\Engineer19.0")
 
@@ -26,26 +28,34 @@ EnumGuiMode = Environment.GuiMode
 env.RunSCIAEngineer(EnumGuiMode.ShowWindowShow)
 print("SEn started")
 
+scriptDir = os.getcwd();
+templatePath = Path(scriptDir) / Path(r"..\res\OpenAPIEmptyProject.esa")
 
-proj = env.OpenProject(r"C:\OpenAPIEmptyProject.esa");#path to empty SCIA Engineer project
+if not templatePath.exists():
+
+    print("Oops, file doesn't exist!")
+
+proj = env.OpenProject(str(templatePath));
 
 print("project opened");
 
 
 
 steelmatid = Guid.NewGuid();
-
-steelmat = Material(steelmatid, r"steel S235", 1, r"S 235");
+steelmatGrade = input('Steel grade: ');
+steelmat = Material(steelmatid, r"steel S235", 1,steelmatGrade);
 proj.Model.CreateMaterial(steelmat);
 comatid = Guid.NewGuid();
-conmat = Material(comatid, "conc", 0, "C30/37");
+conmatGrade = input('Concrete grade: ');
+conmat = Material(comatid, "conc", 0,conmatGrade);
 proj.Model.CreateMaterial(conmat);
 css_steel = Guid.NewGuid();
-cssHEA260 = CrossSectionManufactured(css_steel, "steel.HEA", steelmatid, "HEA260", 1, 0);
+steelCss = input('Steel Css: ')
+cssHEA260 = CrossSectionManufactured(css_steel, "steel.HEA", steelmatid,steelCss, 1, 0);
 proj.Model.CreateCrossSection(cssHEA260);
-a = 6.0;
-b = 8.0;
-c = 3.0;
+a = input('Input a: ');
+b = input('Input b: ');
+c = input('Input c: ');
 n1 = Guid.NewGuid();
 n2 = Guid.NewGuid();
 n3 = Guid.NewGuid();
@@ -80,7 +90,8 @@ proj.Model.CreatePointSupport(PointSupport(Guid.NewGuid(), "Su4", n4));
 
 s1 = Guid.NewGuid();
 nodes = [ n5, n6, n7, n8 ];
-proj.Model.CreateSlab(Slab(s1, "s1", 0, comatid, 0.15, nodes));
+thickness = input('Slab thickness: ');
+proj.Model.CreateSlab(Slab(s1, "s1", 0, comatid, thickness, nodes));
 
 lg1 = Guid.NewGuid();
 proj.Model.CreateLoadGroup(LoadGroup(lg1, "lg1", 0));
@@ -89,7 +100,8 @@ lc1 = Guid.NewGuid();
 proj.Model.CreateLoadCase(LoadCase(lc1, "lc1", 0, lg1, 1));
 
 sf1 = Guid.NewGuid();
-proj.Model.CreateSurfaceLoad(SurfaceLoad(sf1, "sf1", -12500, lc1, s1, 2));
+loadvalue = input('Value of surface load: ');
+proj.Model.CreateSurfaceLoad(SurfaceLoad(sf1, "sf1",loadvalue, lc1, s1, 2));
 
 
 
@@ -149,8 +161,8 @@ for i in range (0, elemcount):
 
 print("Maximum deformation on slab:");
 print(maxvalue);
-print("Press any key to continue:")
-sys.stdin.readline()
+#print("Press any key to continue:")
+#sys.stdin.readline()
 
 
 
