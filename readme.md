@@ -59,6 +59,7 @@
 	from SCIA.OpenAPI.Results import *;
 	from Results64Enums import *;
 	```
+
 * Finalize your script using the dispose (Environment.Dispose() method call)
 # Troubleshooting:
 * if you get following exception, just register esa libraries
@@ -68,3 +69,4 @@
 ```
 Unhandled Exception: System.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation. ---> System.AccessViolationException: Attempted to read or write protected memory. This is often an indication that other memory is corrupt.
 ```
+

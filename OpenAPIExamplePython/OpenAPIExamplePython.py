@@ -4,7 +4,6 @@ import clr;
 import os;
 from pathlib import Path;
 
-
 clr.AddReference(r"c:\Program Files (x86)\SCIA\Engineer19.0\Scia.OpenAPI.dll");
 
 from SCIA.OpenAPI import *;
@@ -45,6 +44,7 @@ css_steel = ApiGuid.NewGuid();
 steelCss = input('Steel Css: ')
 cssHEA260 = CrossSectionManufactured(css_steel, "steel.HEA", steelmatid,steelCss, 1, 0);
 proj.Model.CreateCrossSection(cssHEA260);
+
 a = input('Input a: ');
 b = input('Input b: ');
 c = input('Input c: ');
@@ -85,15 +85,18 @@ nodes = ApiGuidArr( [ n5, n6, n7, n8 ]);
 thickness = input('Slab thickness: ');
 proj.Model.CreateSlab(Slab(s1, "s1", 0, comatid, float(thickness), nodes));
 
+
 lg1 = ApiGuid.NewGuid();
 proj.Model.CreateLoadGroup(LoadGroup(lg1, "lg1", 0));
 
 lc1 = ApiGuid.NewGuid();
 proj.Model.CreateLoadCase(LoadCase(lc1, "lc1", 0, lg1, 1));
 
+
 sf1 = ApiGuid.NewGuid();
 loadvalue = input('Value of surface load: ');
 proj.Model.CreateSurfaceLoad(SurfaceLoad(sf1, "sf1",float(loadvalue), lc1, s1, 2));
+
 
 
 
