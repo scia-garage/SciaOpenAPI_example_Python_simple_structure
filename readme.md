@@ -1,7 +1,7 @@
 # Prepare the environment:
 * install Scia Engineer (32/64bit)
-	* .NET FW is included in setup
-	* start Scia ENgineer to test it
+	* .NET Framework is included in setup
+	* start Scia ENgineer to test it (set protection, open new project, etc.)
 * install python 3.7 
 	* choose correct platform (32/64bit) based on the Scia Engineer platform
 	* install using setup https://www.python.org/downloads/release/python-370/ (check the "add Python to path" checkbox)
@@ -16,13 +16,13 @@
 	* preffered way
 		* via PIP from local .whl file 
 			* get .whl file
+				* from https://github.com/scia-garage/SciaOpenAPI_example_parabolic/tree/master/res
+					* go to website and download .whl file fitting your PYTHON version and PLATFORM
 				* from https://ci.appveyor.com
 					* go to https://ci.appveyor.com/project/pythonnet/pythonnet 
 					* select some stable revision
 					* select correct PYTHON_VERSION (e.g. 3.7) and Platform (e.g. 32/64bit based on SEn) - click it
 					* go to Artifacts and download respective .whl file					
-				* from https://github.com/scia-garage/SciaOpenAPI_example_parabolic/tree/master/res
-					* go to website and download .whl file fitting your PYTHON version and PLATFORM
 			* cmd "pip install .\<path.to.whl.file>.whl"
 			
 	* alternatives (sometimes tricky)
@@ -59,4 +59,14 @@
 	from SCIA.OpenAPI.Results import *;
 	from Results64Enums import *;
 	```
-# Troubleshooting
+
+* Finalize your script using the dispose (Environment.Dispose() method call)
+# Troubleshooting:
+* if you get following exception, just register esa libraries
+	* run cmd AS ADMINISTRATOR
+	* navigate to Scia Engineer directory
+	* run "EP_regsvr32 esa.exe" (for 64bit "ep_regsvr64 esa.exe")
+```
+Unhandled Exception: System.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation. ---> System.AccessViolationException: Attempted to read or write protected memory. This is often an indication that other memory is corrupt.
+```
+

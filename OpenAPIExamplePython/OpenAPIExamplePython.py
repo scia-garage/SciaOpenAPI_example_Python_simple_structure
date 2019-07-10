@@ -5,13 +5,11 @@ import os;
 from pathlib import Path;
 
 clr.AddReference(r"c:\Program Files (x86)\SCIA\Engineer19.0\Scia.OpenAPI.dll");
-clr.AddReference(r"c:\Program Files (x86)\SCIA\Engineer19.0\EnvESA80.dll");
 
 from SCIA.OpenAPI import *;
 from SCIA.OpenAPI.StructureModelDefinition import *;
 from SCIA.OpenAPI.Results import *;
 from Results64Enums import *;
-from EnvESA80 import *;
 from System import Guid
 
 env = Environment(r"c:\Program Files (x86)\SCIA\Engineer19.0", r".\Temp","1.0.0.0");
@@ -34,67 +32,71 @@ print("project opened");
 
 
 
-steelmatid = Guid.NewGuid();
+steelmatid = ApiGuid.NewGuid();
 steelmatGrade = input('Steel grade: ');
 steelmat = Material(steelmatid, r"steel S235", 1,steelmatGrade);
 proj.Model.CreateMaterial(steelmat);
-comatid = Guid.NewGuid();
+comatid = ApiGuid.NewGuid();
 conmatGrade = input('Concrete grade: ');
 conmat = Material(comatid, "conc", 0,conmatGrade);
 proj.Model.CreateMaterial(conmat);
-css_steel = Guid.NewGuid();
+css_steel = ApiGuid.NewGuid();
 steelCss = input('Steel Css: ')
 cssHEA260 = CrossSectionManufactured(css_steel, "steel.HEA", steelmatid,steelCss, 1, 0);
 proj.Model.CreateCrossSection(cssHEA260);
-a = float(input('Input a: '));
-b = float(input('Input b: '));
-c = float(input('Input c: '));
-n1 = Guid.NewGuid();
-n2 = Guid.NewGuid();
-n3 = Guid.NewGuid();
-n4 = Guid.NewGuid();
-n5 = Guid.NewGuid();
-n6 = Guid.NewGuid();
-n7 = Guid.NewGuid();
-n8 = Guid.NewGuid();
-proj.Model.CreateNode(StructNode(n1, "n1", 0, 0, 0));
-proj.Model.CreateNode(StructNode(n2, "n2", a, 0, 0));
-proj.Model.CreateNode(StructNode(n3, "n3", a, b, 0));
-proj.Model.CreateNode(StructNode(n4, "n4", 0, b, 0));
-proj.Model.CreateNode(StructNode(n5, "n5", 0, 0, c));
-proj.Model.CreateNode(StructNode(n6, "n6", a, 0, c));
-proj.Model.CreateNode(StructNode(n7, "n7", a, b, c));
-proj.Model.CreateNode(StructNode(n8, "n8", 0, b, c));
 
-b1 = Guid.NewGuid();
-b2 = Guid.NewGuid();
-b3 = Guid.NewGuid();
-b4 = Guid.NewGuid();
-proj.Model.CreateBeam(Beam(b1, "b1", css_steel, [ n1, n5 ]));
-proj.Model.CreateBeam(Beam(b2, "b2", css_steel,[ n2, n6 ]));
-proj.Model.CreateBeam(Beam(b3, "b3", css_steel,[ n3, n7 ]));
-proj.Model.CreateBeam(Beam(b4, "b4", css_steel,[ n4, n8 ]));
+a = input('Input a: ');
+b = input('Input b: ');
+c = input('Input c: ');
+n1 = ApiGuid.NewGuid();
+n2 = ApiGuid.NewGuid();
+n3 = ApiGuid.NewGuid();
+n4 = ApiGuid.NewGuid();
+n5 = ApiGuid.NewGuid();
+n6 = ApiGuid.NewGuid();
+n7 = ApiGuid.NewGuid();
+n8 = ApiGuid.NewGuid();
+proj.Model.CreateNode(StructNode(n1, "n1", 0.0, 0.0, 0.0));
+proj.Model.CreateNode(StructNode(n2, "n2", float(a), 0.0, 0.0));
+proj.Model.CreateNode(StructNode(n3, "n3", float(a), float(b), 0.0));
+proj.Model.CreateNode(StructNode(n4, "n4", 0.0, float(b), 0.0));
+proj.Model.CreateNode(StructNode(n5, "n5", 0.0, 0.0, float(c)));
+proj.Model.CreateNode(StructNode(n6, "n6", float(a), 0.0, float(c)));
+proj.Model.CreateNode(StructNode(n7, "n7", float(a), float(b), float(c)));
+proj.Model.CreateNode(StructNode(n8, "n8", 0.0, float(b), float(c)));
 
-proj.Model.CreatePointSupport(PointSupport(Guid.NewGuid(), "Su1", n1));
-proj.Model.CreatePointSupport(PointSupport(Guid.NewGuid(), "Su2", n2));
-proj.Model.CreatePointSupport(PointSupport(Guid.NewGuid(), "Su3", n3));
-proj.Model.CreatePointSupport(PointSupport(Guid.NewGuid(), "Su4", n4));
+b1 = ApiGuid.NewGuid();
+b2 = ApiGuid.NewGuid();
+b3 = ApiGuid.NewGuid();
+b4 = ApiGuid.NewGuid();
+proj.Model.CreateBeam(Beam(b1, "b1", css_steel, ApiGuidArr( [ n1, n5 ])));
+proj.Model.CreateBeam(Beam(b2, "b2", css_steel, ApiGuidArr( [ n2, n6 ])));
+proj.Model.CreateBeam(Beam(b3, "b3", css_steel, ApiGuidArr( [ n3, n7 ])));
+proj.Model.CreateBeam(Beam(b4, "b4", css_steel, ApiGuidArr( [ n4, n8 ])));
+
+proj.Model.CreatePointSupport(PointSupport(ApiGuid.NewGuid(), "Su1", n1));
+proj.Model.CreatePointSupport(PointSupport(ApiGuid.NewGuid(), "Su2", n2));
+proj.Model.CreatePointSupport(PointSupport(ApiGuid.NewGuid(), "Su3", n3));
+proj.Model.CreatePointSupport(PointSupport(ApiGuid.NewGuid(), "Su4", n4));
 
 
-s1 = Guid.NewGuid();
-nodes = [ n5, n6, n7, n8 ];
-thickness = float(input('Slab thickness: '));
-proj.Model.CreateSlab(Slab(s1, "s1", 0, comatid, thickness, nodes));
+s1 = ApiGuid.NewGuid();
+nodes = ApiGuidArr( [ n5, n6, n7, n8 ]);
+thickness = input('Slab thickness: ');
+proj.Model.CreateSlab(Slab(s1, "s1", 0, comatid, float(thickness), nodes));
 
-lg1 = Guid.NewGuid();
+
+lg1 = ApiGuid.NewGuid();
 proj.Model.CreateLoadGroup(LoadGroup(lg1, "lg1", 0));
 
-lc1 = Guid.NewGuid();
+lc1 = ApiGuid.NewGuid();
 proj.Model.CreateLoadCase(LoadCase(lc1, "lc1", 0, lg1, 1));
 
-sf1 = Guid.NewGuid();
-loadvalue = float(input('Value of surface load: '));
-proj.Model.CreateSurfaceLoad(SurfaceLoad(sf1, "sf1",loadvalue, lc1, s1, 2));
+
+sf1 = ApiGuid.NewGuid();
+loadvalue = input('Value of surface load: ');
+proj.Model.CreateSurfaceLoad(SurfaceLoad(sf1, "sf1",float(loadvalue), lc1, s1, 2));
+
 
 
 
@@ -159,5 +161,5 @@ print(maxvalue);
 
 
 
-env.CloseAllProjects(SaveMode.SaveChangesNo)
+env.Dispose()
 
