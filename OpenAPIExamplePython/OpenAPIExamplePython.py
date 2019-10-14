@@ -4,19 +4,20 @@ import clr;
 import os;
 from pathlib import Path;
 
-clr.AddReference(r"c:\Program Files (x86)\SCIA\Engineer19.0\Scia.OpenAPI.dll");
+clr.AddReference(r"c:\Program Files (x86)\SCIA\Engineer19.1\SCIA.OpenAPI.dll");
 
 from SCIA.OpenAPI import *;
 from SCIA.OpenAPI.StructureModelDefinition import *;
 from SCIA.OpenAPI.Results import *;
 from Results64Enums import *;
+from SCIA.OpenAPI.OpenAPIEnums import *;
 from System import Guid
 
-env = Environment(r"c:\Program Files (x86)\SCIA\Engineer19.0", r".\Temp","1.0.0.0");
+env = Environment(r"c:\Program Files (x86)\SCIA\Engineer19.0", r"c:\Temp\OpenAPITemp","1.0.0.0");
 print("Environment set");
 
-EnumGuiMode = Environment.GuiMode
-env.RunSCIAEngineer(EnumGuiMode.ShowWindowShow)
+EnumGuiMode = Environment.GuiMode.ShowWindowShow
+env.RunSCIAEngineer(EnumGuiMode)
 print("SEn started")
 
 scriptDir = os.getcwd();
@@ -40,6 +41,7 @@ comatid = ApiGuid.NewGuid();
 conmatGrade = input('Concrete grade: ');
 conmat = Material(comatid, "conc", 0,conmatGrade);
 proj.Model.CreateMaterial(conmat);
+
 css_steel = ApiGuid.NewGuid();
 steelCss = input('Steel Css: ')
 cssHEA260 = CrossSectionManufactured(css_steel, "steel.HEA", steelmatid,steelCss, 1, 0);
@@ -74,7 +76,11 @@ proj.Model.CreateBeam(Beam(b2, "b2", css_steel, ApiGuidArr( [ n2, n6 ])));
 proj.Model.CreateBeam(Beam(b3, "b3", css_steel, ApiGuidArr( [ n3, n7 ])));
 proj.Model.CreateBeam(Beam(b4, "b4", css_steel, ApiGuidArr( [ n4, n8 ])));
 
-proj.Model.CreatePointSupport(PointSupport(ApiGuid.NewGuid(), "Su1", n1));
+Su1 = PointSupport(ApiGuid.NewGuid(), "Su1", n1);
+Su1.ConstraintRx = eConstraintType.Free;
+Su1.ConstraintRy = eConstraintType.Free;
+Su1.ConstraintRz = eConstraintType.Free;
+proj.Model.CreatePointSupport(Su1);
 proj.Model.CreatePointSupport(PointSupport(ApiGuid.NewGuid(), "Su2", n2));
 proj.Model.CreatePointSupport(PointSupport(ApiGuid.NewGuid(), "Su3", n3));
 proj.Model.CreatePointSupport(PointSupport(ApiGuid.NewGuid(), "Su4", n4));
@@ -91,14 +97,33 @@ proj.Model.CreateLoadGroup(LoadGroup(lg1, "lg1", 0));
 
 lc1 = ApiGuid.NewGuid();
 proj.Model.CreateLoadCase(LoadCase(lc1, "lc1", 0, lg1, 1));
-
+CI1 =  CombinationItem(lc1, 1.5);
+combinationItems = [];
+combinationItems.append(CI1);
+C1 = Combination(ApiGuid.NewGuid(), "C1", combinationItems)
+C1.Category = eLoadCaseCombinationCategory.AccordingNationalStandard,
+C1.NationalStandard = eLoadCaseCombinationStandard.EnUlsSetC
+proj.Model.CreateCombination(C1)
 
 sf1 = ApiGuid.NewGuid();
 loadvalue = input('Value of surface load: ');
 proj.Model.CreateSurfaceLoad(SurfaceLoad(sf1, "sf1",float(loadvalue), lc1, s1, 2));
 
 
+lineSupport = LineSupport(Guid.NewGuid(), "lineSupport", b1)
+lineSupport.Member = b1;
+lineSupport.ConstraintRx = eConstraintType.Free;
+lineSupport.ConstraintRy = eConstraintType.Free;
+lineSupport.ConstraintRz = eConstraintType.Free;
+proj.Model.CreateLineSupport(lineSupport);
 
+lineLoad = LineLoadOnBeam(Guid.NewGuid(), "lineLoad")
+lineLoad.Member = b1;
+lineLoad.LoadCase = lc1;
+lineLoad.Value1 = -12500;
+lineLoad.Value2 = -12500;
+lineLoad.Direction = eDirection.X;
+proj.Model.CreateLineLoad(lineLoad);
 
 proj.Model.RefreshModel_ToSCIAEngineer()
 
@@ -108,10 +133,6 @@ print("My model sent to SEn");
 proj.RunCalculation();
 print("My model calculate");
 
-
-#ee = CXEP_SimpleResultsAPI();
-#rapi = ResultsAPI(ee,proj.Model);
-#proj.Model.InitializeResultsAPI(rapi);
 
 rapi = proj.Model.InitializeResultsAPI();
 
@@ -125,13 +146,23 @@ keyIntFor1Db1.EntityName = "b1";
 keyIntFor1Db1.Dimension = eDimension.eDim_1D;
 keyIntFor1Db1.ResultType = eResultType.eFemBeamInnerForces;
 keyIntFor1Db1.CoordSystem = eCoordSystem.eCoordSys_Local;
+IntFor1Db1 = rapi.LoadResult(keyIntFor1Db1)
 
 print(IntFor1Db1.GetTextOutput());
-
-
-
-
-
+#combination
+#Create container for 1D results
+IntFor1Db1Combi =  Result();
+#Results key for internal forces on beam 1
+keyIntFor1Db1Combi =  ResultKey();
+keyIntFor1Db1Combi.EntityType = eDsElementType.eDsElementType_Beam;
+keyIntFor1Db1Combi.EntityName = "b1";
+keyIntFor1Db1Combi.CaseType = eDsElementType.eDsElementType_Combination;
+keyIntFor1Db1Combi.CaseId = C1.Id;
+keyIntFor1Db1Combi.Dimension = eDimension.eDim_1D;
+keyIntFor1Db1Combi.ResultType = eResultType.eFemBeamInnerForces;
+keyIntFor1Db1Combi.CoordSystem = eCoordSystem.eCoordSys_Local;
+#Load 1D results based on results key
+IntFor1Db1Combi = rapi.LoadResult(keyIntFor1Db1Combi);
 
 Def2Ds1 = Result();
 keyDef2Ds1 = ResultKey();
@@ -156,10 +187,10 @@ for i in range (0, elemcount):
 
 print("Maximum deformation on slab:");
 print(maxvalue);
-#print("Press any key to continue:")
-#sys.stdin.readline()
+print("Press any key to continue:")
+sys.stdin.readline()
 
-
+proj.CloseProject(SaveMode.SaveChangesNo);
 
 env.Dispose()
 
