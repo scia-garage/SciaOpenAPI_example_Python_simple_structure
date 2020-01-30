@@ -2,9 +2,13 @@ import uuid;
 import sys;
 import clr;
 import os;
-from pathlib import Path;
+from pathlib import Path
 
-clr.AddReference(r"c:\Program Files (x86)\SCIA\Engineer19.1\SCIA.OpenAPI.dll");
+sys.path.append(r"c:\Program Files (x86)\SCIA\Engineer19.1")
+sys.path.append(r"c:\Program Files (x86)\SCIA\Engineer19.1\OpenAPI_dll")
+
+
+clr.AddReference(r"c:\Program Files (x86)\SCIA\Engineer19.1\OpenAPI_dll\SCIA.OpenAPI.dll");
 
 from SCIA.OpenAPI import *;
 from SCIA.OpenAPI.StructureModelDefinition import *;
@@ -13,7 +17,7 @@ from Results64Enums import *;
 from SCIA.OpenAPI.OpenAPIEnums import *;
 from System import Guid
 
-env = Environment(r"c:\Program Files (x86)\SCIA\Engineer19.0", r"c:\Temp\OpenAPITemp","1.0.0.0");
+env = Environment(r"c:\Program Files (x86)\SCIA\Engineer19.1", r"c:\Temp\OpenAPITemp","1.0.0.0");
 print("Environment set");
 
 EnumGuiMode = Environment.GuiMode.ShowWindowShow
@@ -110,14 +114,14 @@ loadvalue = input('Value of surface load: ');
 proj.Model.CreateSurfaceLoad(SurfaceLoad(sf1, "sf1",float(loadvalue), lc1, s1, 2));
 
 
-lineSupport = LineSupport(Guid.NewGuid(), "lineSupport", b1)
+lineSupport = LineSupport(ApiGuid.NewGuid(), "lineSupport", b1)
 lineSupport.Member = b1;
 lineSupport.ConstraintRx = eConstraintType.Free;
 lineSupport.ConstraintRy = eConstraintType.Free;
 lineSupport.ConstraintRz = eConstraintType.Free;
 proj.Model.CreateLineSupport(lineSupport);
 
-lineLoad = LineLoadOnBeam(Guid.NewGuid(), "lineLoad")
+lineLoad = LineLoadOnBeam(ApiGuid.NewGuid(), "lineLoad")
 lineLoad.Member = b1;
 lineLoad.LoadCase = lc1;
 lineLoad.Value1 = -12500;

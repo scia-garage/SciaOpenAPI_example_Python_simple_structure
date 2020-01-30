@@ -5,8 +5,7 @@
     <ProjectGuid>1d845523-9eb0-4dca-92d7-fdfbb3d014ed</ProjectGuid>
     <ProjectHome>.</ProjectHome>
     <StartupFile>OpenAPIExamplePython.py</StartupFile>
-    <SearchPath>
-    </SearchPath>
+    <SearchPath>..\..\..\..\Program Files (x86)\SCIA\Engineer19.1\OpenAPI_dll</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>OpenAPIExamplePython</Name>
