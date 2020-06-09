@@ -1,2 +1,5 @@
 *.bak
 v15/
+.vs/
+env/
+.vs/OpenAPIExamplePython/v16/.suo
